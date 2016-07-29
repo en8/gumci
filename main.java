@@ -1,5 +1,6 @@
 package Mail;
 
+
 import java.util.Scanner;
 
 import javax.mail.MessagingException;
@@ -19,23 +20,23 @@ public class main {
 		while(stop == true){
 			Scanner scan = new Scanner(System.in);
 		
-			System.out.print("¹Ş´Â »ç¶÷ : ");		
+			System.out.print("ë°›ëŠ” ì‚¬ëŒ : ");		
 			get= scan.nextLine();
 			System.out.println("");
-			System.out.print("º¸³»´Â »ç¶÷ : ");
+			System.out.print("ë³´ë‚´ëŠ” ì‚¬ëŒ : ");
 			send = scan.nextLine();
 			System.out.println("");
-			System.out.print("Á¦¸ñ ÀÔ·Â : ");
+			System.out.print("ì œëª© ì…ë ¥ : ");
 			title = scan.nextLine();
 			System.out.println("");
-			System.out.print("³»¿ë ÀÔ·Â : ");
+			System.out.print("ë‚´ìš© ì…ë ¥ : ");
 			body = scan.nextLine();
 			System.out.println("");
 			
-			mail mail = new mail(get, send, title, body); // ¹Ş´Â»ç¶÷, º¸³»´Â»ç¶÷, Á¦¸ñ, ³»¿ë
+			mail mail = new mail(get, send, title, body); // ë°›ëŠ”ì‚¬ëŒ, ë³´ë‚´ëŠ”ì‚¬ëŒ, ì œëª©, ë‚´ìš©
 			
 			System.out.println("##################################################################################################");
-			System.out.print("¸ŞÀÏÀ» ¶Ç º¸³»½Ã°Ú½À´Ï±î? 1. Yes 2. No : ");
+			System.out.print("ë©”ì¼ì„ ë˜ ë³´ë‚´ì‹œê² ìŠµë‹ˆê¹Œ? 1. Yes 2. No : ");
 			st = scan.nextLine();
 			if(st.equals("1")== true || st.equals("yes")== true){
 			}
@@ -45,12 +46,3 @@ public class main {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-// ¾ÆÁ÷Àº ½Ã°£ÀÌ¸¹ÀÌ°É·Á¿ä

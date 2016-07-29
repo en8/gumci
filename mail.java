@@ -1,5 +1,6 @@
 package Mail;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.util.Scanner;
 
 public class mail{
 	mail(String getname, String sendname, String subject, String content){
-		//¹Ş´Â»ç¶÷ º¸³»´Â»ç¶÷ Á¦¸ñ ³»¿ë
+		//ë°›ëŠ”ì‚¬ëŒ ë³´ë‚´ëŠ”ì‚¬ëŒ ì œëª© ë‚´ìš©
 		
 		send send = new send();
 		
@@ -23,14 +24,14 @@ public class mail{
 		
 		String[] get = getname.split(",");
 		
-		System.out.println("¹Ş´Â »ç¶÷Àº : " + getname);
-		System.out.println("º¸³»´Â »ç¶÷Àº : " + sendname);
-		System.out.println("Á¦¸ñ : " + subject);
-		System.out.println("³»¿ë : " + content);
+		System.out.println("ë°›ëŠ” ì‚¬ëŒì€ : " + getname);
+		System.out.println("ë³´ë‚´ëŠ” ì‚¬ëŒì€ : " + sendname);
+		System.out.println("ì œëª© : " + subject);
+		System.out.println("ë‚´ìš© : " + content);
 		
 		Date dt = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy³â MM¿ù ddÀÏ hh½Ã mmºĞ ssÃÊ a"); 
-		System.out.println("º¸³½½Ã°£Àº : " +sdf.format(dt).toString());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyë…„ MMì›” ddì¼ hhì‹œ mmë¶„ ssì´ˆ a"); 
+		System.out.println("ë³´ë‚¸ì‹œê°„ì€ : " +sdf.format(dt).toString());
         		
 		try
 		{	
@@ -67,16 +68,16 @@ public class mail{
             	}
             }
             
-            System.out.print("µ¥ÀÌÅÍ¸¦ »èÁ¦ÇÏ½Ã°Ú½À´Ï±î? 1. »èÁ¦   2. ¾Æ´Ï¿ä : ");
+            System.out.print("ë°ì´í„°ë¥¼ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ? 1. ì‚­ì œ   2. ì•„ë‹ˆìš” : ");
             ots = scan.next();
-            if (ots.equals("1")== true || ots.equals("ÀüºÎ")== true){
+            if (ots.equals("1")== true || ots.equals("ì „ë¶€")== true){
             	state.executeUpdate(last);
             }
             
             con.close();
          }
          catch(Exception e){
-             System.out.println("¿¬°á ¾ÈµÊ");
+             System.out.println("ì—°ê²° ì•ˆë¨");
              e.printStackTrace();
          }
 	}
