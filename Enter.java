@@ -13,10 +13,10 @@ public class Enter {
 			try
 			{
 				
-				Class.forName("org.gjt.mm.mysql.Driver");
+				Class.forName("org.gjt.mm.mysql.Driver"); //driver 등록
 				
-				Connection con  = DriverManager.getConnection("jdbc:mysql://223.130.121.106:3306/mail","root","0000");
-				Statement state = con.createStatement();
+				Connection con  = DriverManager.getConnection("jdbc:mysql://223.130.121.106:3306/mail","root","0000"); 
+				Statement state = con.createStatement(); //작성된 결과돌려죽
 				Statement state1 = con.createStatement();
 					
 				String[] get = getname.split(",");
@@ -31,7 +31,6 @@ public class Enter {
 				
 				if (result1.next()){
 					int cnt = result1.getInt(1);
-					System.out.println(cnt);
 					while(result.next())
 					{
 						for (int p = 1; p < cnt+1; p++){
