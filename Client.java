@@ -3,6 +3,7 @@ package Client;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -11,8 +12,7 @@ public class Client {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-			
-			Socket sock = new Socket("192.168.59.45", 10000);
+			Socket sock = new Socket("223.130.121.106", 1532);
 			
 			OutputStream out = sock.getOutputStream();
 			
