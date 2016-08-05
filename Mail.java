@@ -10,21 +10,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class Mail extends Thread{ //눈에 안보이는 쓰레드 클래스를 상속
-		String getpeople;
-		String sendpeople;
-		String title;
-		String body;
+public class Mail{ //눈에 안보이는 쓰레드 클래스를 상속
 		
-		Mail(String to, String from, String title, String body){
-			this.getpeople = to;
-			this.sendpeople = from;
-			this.title = title;
-			this.body = body;
-		}
-		
-		@Override
-		public void run() {
+	
+	void run(String getpeople,String sendpeople,String title,String body){
 			// TODO Auto-generated method stub;
 			Properties props = new Properties();
 			
@@ -43,6 +32,10 @@ public class Mail extends Thread{ //눈에 안보이는 쓰레드 클래스를 �
 		   	 	message.setContent(body, "text/plain; charset=utf-8");
 	    	 	message.setSentDate(new Date());
 	    	 	Transport.send(message);
+	    	 	
+	    	 	Database d = new Database();
+			d.data(getpeople,sendpeople,title,body,-1);
+	    	 	
 		     }
 		     catch (MessagingException mex){
 		    	if (mex.getMessage() == "Invalid Addresses"){

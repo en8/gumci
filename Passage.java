@@ -14,17 +14,18 @@ public class Passage extends Thread {
 	}
 	public void run(){
 		String[] divide = to.split(",");
+		Mail mail = new Mail();
 		for(int i = 0; i < divide.length; i ++){
-		Thread mail = new Mail(divide[i],from,title,body);
-		mail.start();
-		}
-		try {
-			Thread.currentThread().join();
-			Database data = new Database();
-			data.data(to,from,title,body);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			mail.run(divide[i],from,title,body);
+			try{
+			sleep(1000);
+			}catch (InterruptedException e){
 			e.printStackTrace();
+			}
+
 		}
+
+		Database d = new Database();
+		d.data(to,from,title,body,divide.length);
 	}
 }
