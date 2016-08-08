@@ -16,9 +16,9 @@ public class Server extends Thread{
 	public void run(){
 		try{
 			InputStream in;
-			in = client.getInputStream();
+			in = client.getInputStream(); //미리 버퍼에 데이터를 가져다놓음
 			
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			BufferedReader br = new BufferedReader(new InputStreamReader(in)); //문자 in을 효율적으로 크기를 잡는다.
 			
 			String line = null;
 			
@@ -39,7 +39,10 @@ public class Server extends Thread{
 			client.close();
 		}catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
+			if(e.getMessage() == "Connection reset"){
+				System.out.println("클라이언트와의 연결이 끊어졌습니다.");
+			}
 		}	
 	}
 }
