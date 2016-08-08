@@ -29,8 +29,9 @@ public class Server extends Thread{
 				str[i] = line;
 				System.out.println(str[i]);
 				if (i == 3){
-					Thread t = new Passage(str[0],str[1],str[2],str[3]);
-					t.start();
+					Passage p = new Passage();
+					p.passage(str[0], str[1], str[2], str[3]);
+					System.out.println(client.getInetAddress() +"님의 메세지가 완료되었습니다.");
 				}
 				i++;
 			}
@@ -38,11 +39,7 @@ public class Server extends Thread{
 			client.close();
 		}catch (IOException e) {
 			// TODO Auto-generated catch block
-			if(e.getMessage() == "Connection reset"){
-				System.out.println("사용자와의 연결이 끊어졌습니다.");
-			}else{
 			e.printStackTrace();
-			}
 		}	
 	}
 }

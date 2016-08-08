@@ -10,11 +10,9 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class Mail{ //눈에 안보이는 쓰레드 클래스를 상속
-		
-	
-	void run(String getpeople,String sendpeople,String title,String body){
-			// TODO Auto-generated method stub;
+public class Mail{
+
+		public void mail(String getpeople, String sendpeople, String title, String body) {
 			Properties props = new Properties();
 			
 		    props.put("mail.transport.protocol", "smtp");
@@ -34,7 +32,7 @@ public class Mail{ //눈에 안보이는 쓰레드 클래스를 상속
 	    	 	Transport.send(message);
 	    	 	
 	    	 	Database d = new Database();
-			d.data(getpeople,sendpeople,title,body,-1);
+				d.data(getpeople,sendpeople,title,body,-1);
 	    	 	
 		     }
 		     catch (MessagingException mex){

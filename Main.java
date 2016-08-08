@@ -9,6 +9,7 @@ public class Main {
 	public static void main(String[] args){
 		// TODO Auto-generated method stub
 		try {
+			
 			ServerSocket server = new ServerSocket(1532);
 			System.out.println("하하");
 				

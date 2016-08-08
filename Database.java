@@ -7,9 +7,7 @@ import java.sql.Statement;
 
 public class Database{
 	
-	public Database(){
-	}
-		
+	
 	void data(String to, String from, String title, String body,int i){
 		try
 		{
