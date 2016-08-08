@@ -18,7 +18,9 @@ public class Server extends Thread{
 			InputStream in;
 			in = client.getInputStream(); //미리 버퍼에 데이터를 가져다놓음
 			
+			
 			BufferedReader br = new BufferedReader(new InputStreamReader(in)); //문자 in을 효율적으로 크기를 잡는다.
+			
 			
 			String line = null;
 			

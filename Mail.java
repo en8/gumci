@@ -20,7 +20,9 @@ public class Mail{
 	String body;
 	String divide[];
 	int cnt;
-	int ipcnt=0;
+	
+	int ipcnt = 0;
+	
 	String[] ipary = {"223.130.121.106","223.130.121.107"};
 	String ip = ipary[ipcnt];
 	
