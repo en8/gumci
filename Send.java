@@ -33,7 +33,7 @@ public class Send {
 			list.add(divide[i]);
 		}
 		this.allpeople = getpeople;
-		this.lcnt = divide.length;
+		this.lcnt = divide.length; //초기 리스트값
 		this.sendpeople = sendpeople;
 		this.title = title;
 		this.body = body;
@@ -49,14 +49,14 @@ public class Send {
 	void send() {
 		int scnt = 0; //성공한 값 카운트
 		int ipcnt = 0; //database ip순서
-		int cnt = 0; //증가되는 값 카운트 
+		int cnt = 0; //증가값
 		int fcnt=0; // 실패해서 증가되는 값
 		
 		do{
 			props.put("mail.transport.protocol", protocol);
 			props.put("mail.smtp.host", data.list.get(ipcnt));
 			props.put("mail.smtp.port", port);  //props 에 처음 세팅
-			for(cnt = 0; cnt < lcnt; cnt++){ //현재i증가
+			for(cnt = 0; cnt < lcnt; cnt++){ // lcnt엔 처음엔 리스트값이 저장되지만 나중엔 실패한 값이 저장된다
 				try{
 					session = Session.getDefaultInstance(props);
 					message = new MimeMessage(session);
@@ -66,25 +66,30 @@ public class Send {
 					message.setSubject(title);
 					message.setContent(body, "text/plain; charset=utf-8");
 					message.setSentDate(new Date());
-					Transport.send(message); //오류가나면 오류메시지로
-					data.insertm(list.get(cnt).toString(), sendpeople, title, body,true);
 					
+					Transport.send(message); //오류가나면 오류메시지로가서 아래의 행들은 실행되지 않음
+					
+					data.insertm(list.get(cnt).toString(), sendpeople, title, body,true); //성공하면 data클래스의 insertm에 성공과 성공여부를 저장
 					scnt = scnt + 1; //성공한 값 카운트
-					
 					}
 					catch (MessagingException mex){
 						if (mex.getMessage() == "Invalid Addresses"){
 							System.out.println("주소가 잘못되었습니다. 받는사람 메일주소 : "+ list.get(cnt).toString());
 							data.insertm(list.get(cnt).toString(), sendpeople, title, body,false);
-							flist.add(list.get(cnt));
+							flist.add(list.get(cnt)); //ip 롤링을 제외한 실패요소들은 실패리스트에 저장 그리고 insertm 에 실패를 저장
 						}else{
-							if(ipcnt == 1){
-								sw = true;
+							if(ipcnt == data.list.size() - 1){
+								for(int i = cnt; i < lcnt; i++){
+									flist.add(list.get(i));
+									data.insertm(list.get(i).toString(), sendpeople, title, body,false);
+								}
+								data.inserti(allpeople, sendpeople,scnt,flist.size());
+								sw = true; // 주어진 ip가 부족해서 오류가나면 지금까지의 작업만 저장하고 나머지 것들은 실패리스트에 넣음. 그리고 서버에 성공수와 실패수를 저장하고 sw를 on시켜서 while 문을 빠져나옴
 							}
 							System.out.println(mex);
 							System.out.println("ip롤링 할 메시지 저장");
 							list.add(0,list.get(cnt).toString());
-							fcnt++;
+							fcnt++; //리스트 0번째에 실패한값을 넣음 그리고 fcnt를 하나 더함
 						}
 					}
 					catch(Exception e){
@@ -93,12 +98,12 @@ public class Send {
 				}
 			if(fcnt == 0){
 				data.inserti(allpeople, sendpeople,scnt,flist.size());
-				sw = true;
+				sw = true; // fnct가 0이면 메일 ip롤링할 값이 없다는 것이므로 서버에 성공한값과 실패한 값을 보냄
 			}
 			else{
-				lcnt = fcnt;
-				fcnt = 0;
-				ipcnt++;
+				lcnt = fcnt; //리스트값을 실패한 리스트값을 저장
+				fcnt = 0; //실패한 값 초기화
+				ipcnt++; //ip를 바꿔준다
 			}
 		}while(sw == false);
 		

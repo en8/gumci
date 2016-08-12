@@ -12,8 +12,9 @@ public class MailData implements Database{
 	List list = new ArrayList(); //ip 목록
 	
 	private Connection con = null;
-	private ResultSet result = null;
 	private PreparedStatement state = null;
+	private ResultSet result = null;
+	
 	
 	int x = 0;
 	int columncnt = 0;
@@ -53,19 +54,16 @@ public class MailData implements Database{
 			e.printStackTrace();
 		}
 	}
-	
 	@Override
 	public void show(String s){
 		try{
 			state = con.prepareStatement(sm);
-			state.setString(1, s);
+			state.setString(1, s); //보낸사람에대한 select
 			result = state.executeQuery();
-			
-			result.last();
-			x = result.getRow();
-			
-			str =  new String[x][columncnt];
-			result.first();
+			result.last(); //x에 행마지막을 선택한다
+			x = result.getRow(); //x에 행의 마지막 값을 넣어준다
+			str =  new String[x][columncnt]; // str에 컬럼개수,행개수넣음
+			result.first(); //다시 첫번째를 선택
 			
 			while(result.next()){
 				for (int i = 0; i < columncnt ; i++){
@@ -77,7 +75,6 @@ public class MailData implements Database{
 			System.out.println("message 테이블의 내용을 출력할수 없습니다.");
 		}
 	}
-	
 	@Override
 	public void insertm(String to, String from, String title, String body, boolean send){
 		try {
