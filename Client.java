@@ -20,7 +20,7 @@ public class Client {
 		BufferedReader br = null;
 		try {
 			
-			sock = new Socket("223.130.121.106", 1532);
+			sock = new Socket("192.168.59.45", 1532);
 			
 			out = sock.getOutputStream();
 			pw = new PrintWriter(new OutputStreamWriter(out));
@@ -33,8 +33,10 @@ public class Client {
 			String from = null;
 			String title = null;
 			String body = null;
+			String choose = null;
 				
 			Scanner scan = new Scanner(System.in);
+			
 			do{
 				System.out.print("수신자 : ");
 				to = scan.nextLine();
@@ -71,6 +73,14 @@ public class Client {
 					System.out.print(line + "\t");
 				}i++;
 			}
+			
+			System.out.println("1. 현재 보낸사람 삭제 2. 전체삭제 3. 관둔다");
+			choose = scan.nextLine();
+			if(choose == "1" || choose == "2"){
+				pw.println(choose);
+				pw.flush();
+			}
+			
 			sock.close();
 			
 		} catch (Exception e) {
