@@ -10,18 +10,21 @@ import java.io.PrintWriter;
 import java.net.Socket;
 public class Server extends Thread{
 	Socket client;
+	MailData data;
+	int cnt = 0;
+	
 	
 	InputStream in = null;
-	BufferedReader br = null;
+	BufferedReader br = null; //inputstream 을 한줄단위로 읽기위해 버퍼리더를사용
 	OutputStream out = null;
 	PrintWriter pw = null;
 	
 	Server(Socket client){
 		this.client = client;
-	
+		data = new MailData();
 		try{
 			out = client.getOutputStream();
-			pw = new PrintWriter(new OutputStreamWriter(out));
+			pw = new PrintWriter(new OutputStreamWriter(out)); //기본 데이터형이나 객체를 쓰기위한 클래스
 		}catch(IOException e){
 			e.printStackTrace();
 		}
@@ -35,7 +38,7 @@ public class Server extends Thread{
 			String line = null;
 
 			int i = 0;
-			String[] str = new String[4];
+			String[] str = new String[5];
 			
 			while((line = br.readLine()) != null){
 				str[i] = line;
@@ -43,7 +46,8 @@ public class Server extends Thread{
 				if (i == 3){
 					Send m = new Send(str[0], str[1], str[2], str[3]);
 					m.send();
-					select(str[1],1);
+					cnt = m.divide.length;
+					data.select(str[1], cnt, pw);
 					pw.flush();
 					break;
 				}
@@ -61,12 +65,4 @@ public class Server extends Thread{
 		}	
 	}
 	
-	public void select(String s,int i){
-		MailData data = new MailData(s,i);
-		for (int j = 0; j < data.cnt; j++){
-			for(int k = 0; k < data.columncnt; k++){
-					pw.println(data.str[j][k]);
-			}
-		}
-	}
 }

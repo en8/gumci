@@ -1,5 +1,6 @@
 package Mail;
 
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,12 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MailData implements Database{
+	
 	List list = new ArrayList(); //ip 목록
 	
 	private Connection con = null;
 	private PreparedStatement state = null;
 	private ResultSet result = null;
-	
 	
 	int x = 0;
 	int columncnt = 0;
@@ -25,58 +26,26 @@ public class MailData implements Database{
 		try{
 			Class.forName(driver); //driver 등록
 			con = DriverManager.getConnection(db,id,pw);
+		}catch(Exception e){
+			enter(false);
+			e.printStackTrace();
+		}
+	}
+	void ip(){
+		String ip = "SELECT * FROM `ip`";
+		try{
 			state = con.prepareStatement(ip);
 			result = state.executeQuery();
 			while(result.next()){
 				list.add(result.getString("ip"));
 			}	
 		}catch(Exception e){
-			enter(false);
 			e.printStackTrace();
-		}
-	}
-	
-	MailData(String s,int i){
-		try{
-			Class.forName(driver); //driver 등록
-			con = DriverManager.getConnection(db,id,pw);
-			state = con.prepareStatement(column);
-			result = state.executeQuery();
-			while(result.next()){
-				columncnt = result.getInt("COUNT(*)");
-			}
-			if (i == 1){
-				show(s);
-			}else{
-				delete();
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	@Override
-	public void show(String s){
-		try{
-			state = con.prepareStatement(sm);
-			state.setString(1, s); //보낸사람에대한 select
-			result = state.executeQuery();
-			result.last(); //x에 행마지막을 선택한다
-			x = result.getRow(); //x에 행의 마지막 값을 넣어준다
-			str =  new String[x][columncnt]; // str에 컬럼개수,행개수넣음
-			result.first(); //다시 첫번째를 선택
-			
-			while(result.next()){
-				for (int i = 0; i < columncnt ; i++){
-					str[cnt][i] = result.getString(i+1);
-				}cnt++;
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("message 테이블의 내용을 출력할수 없습니다.");
 		}
 	}
 	@Override
 	public void insertm(String to, String from, String title, String body, boolean send){
+		String im = "INSERT INTO `message` (getname,sendname,time,subject,text,state) VALUES(?,?,NOW(),?,?,?);";
 		try {
 			state = con.prepareStatement(im);
 			state.setString(1, to);
@@ -96,6 +65,8 @@ public class MailData implements Database{
 	}
 	@Override
 	public void inserti(String to, String from, int i, int j){
+		String ii = "INSERT INTO `info` (time,getname,sendname,count,failcount) VALUES(NOW(),?,?,?,?);";
+		
 		try {
 			state = con.prepareStatement(ii);
 			state.setString(1, to);
@@ -108,13 +79,66 @@ public class MailData implements Database{
 		}
 	}
 	
+	
 	@Override
-	public void delete() {
+	public void select(String s,int i,PrintWriter pw){
+		String column = "SELECT COUNT(*) FROM information_schema.columns WHERE table_name='message';";
+		String sm;
 		try{
-			state = con.prepareStatement(del);
+			state = con.prepareStatement(column);
+			result = state.executeQuery();
+			while(result.next()){
+				columncnt = result.getInt("COUNT(*)");
+			}
+			if(i > 0){
+				sm = "SELECT * FROM `message` where sendname = ? order by number desc limit ?";
+				state = con.prepareStatement(sm);
+				state.setInt(2, i);
+			}else{
+				sm = "SELECT * FROM `message` where sendname = ?";
+				state = con.prepareStatement(sm);
+			}
+			/*
+			 sm = "SELECT * FROM `message` where sendname = ? and where state = SUCCESSED order by number desc limit ?";
+			 */
+			state.setString(1, s);
+			result = state.executeQuery();
+			
+			result.last();
+			x = result.getRow();
+			System.out.println(x);
+			str =  new String[x][columncnt];
+			result.first();
+			
+			while(result.next()){
+				for (int j = 0; j < columncnt ; j++){
+					str[cnt][j] = result.getString(j + 1);
+					pw.println(str[cnt][j]);
+					System.out.println("하이하이");
+				}cnt++;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("message 테이블의 내용을 출력할수 없습니다.");
+		}
+	}
+	@Override
+	public void delete(String s,int i) {
+		String del;
+		try{
+			if(i > 0){
+				del = "DELETE FROM `message` WHERE sendname = ? order by number desc limit ?";
+				state = con.prepareStatement(del);
+				state.setInt(2, i);;
+			}else{
+				del = "DELETE FROM `message` WHERE sendname = ?";
+				state = con.prepareStatement(del);
+			}
+			state.setString(1, s);
 			state.executeUpdate();
 		}catch(SQLException e) {
 			System.out.println("message테이블의 내용을 삭제할수 없습니다");
 		}
 	}
+
 }
