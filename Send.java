@@ -79,6 +79,7 @@ public class Send {
 							System.out.println("주소가 잘못되었습니다. 받는사람 메일주소 : "+ list.get(cnt).toString());
 							data.insertm(list.get(cnt).toString(), sendpeople, title, body,false);
 							flist.add(list.get(cnt));
+							
 						}else{
 							if(ipcnt == data.list.size() - 1){
 								for(int i = cnt; i < lcnt; i++){
@@ -86,18 +87,18 @@ public class Send {
 									data.insertm(list.get(i).toString(), sendpeople, title, body,false);
 									System.out.println(mex.getMessage());
 								}
-							}else if(ipcnt == data.list.size() - 1 && cnt == lcnt){
+							}	
+							if(ipcnt == data.list.size() - 1 && cnt == lcnt){
 								data.inserti(allpeople, sendpeople,scnt,flist.size());
+								System.out.println(mex.getMessage());
 								sw = true;
 							}
 							System.out.println("ip롤링 할 메시지 저장");
 							list.add(0,list.get(cnt));
 							fcnt++;
-							System.out.println(mex.getMessage());
 						}
 					}
 					catch(Exception e){
-						System.out.println(e.getMessage());
 					}
 				}
 			if(fcnt == 0){
@@ -106,17 +107,12 @@ public class Send {
 				sw = true;
 			}
 			else{
-				for(int i = fcnt; i < (lcnt + fcnt); i++){
-					System.out.println("여기");
+				for(int i = fcnt; i < (lcnt + fcnt) - 1; i++){
 					System.out.println(i);
-					System.out.println(lcnt + fcnt);
+					System.out.println(lcnt + fcnt - 1);
 					System.out.println(list.size());
-					System.out.println(list.get(i));
 					list.remove(i);
-					if(list.size() == 11){
-						break;
-					}
-
+					i = i - 1;
 				}
 				lcnt = fcnt;
 				fcnt = 0;

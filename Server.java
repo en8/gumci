@@ -13,10 +13,10 @@ public class Server extends Thread{
 	MailData data;
 	
 	
-	InputStream in = null;
-	BufferedReader br = null; //inputstream 을 한줄단위로 읽기위해 버퍼리더를사용
-	OutputStream out = null;
-	PrintWriter pw = null;
+	InputStream in = null;  //바이트 단위로 입력               
+	BufferedReader br = null; //inputstream 을 한줄단위로 읽기위해 버퍼리더를사용                      문자 입력 스트림으로부터 문자를 읽어 들이거나 문자 출력 스트림으로 문자를 내보낼때 사용 미리버퍼에 데이터를 가져놔서 보다 효율적으로 입출력
+	OutputStream out = null; //바이트 단위로 출력   바이트 스트림에서 문자스트림으로 문자스트림에서 바이트스트림
+	PrintWriter pw = null;	
 	
 	Server(Socket client){
 		this.client = client;
