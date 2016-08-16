@@ -17,9 +17,6 @@ public class MailData implements Database{
 	private PreparedStatement state = null;
 	private ResultSet result = null;
 	
-	int x = 0;
-	int columncnt = 0;
-	int cnt = 0;
 	String[][] str = null;
 	
 	MailData(){
@@ -84,6 +81,8 @@ public class MailData implements Database{
 	public void select(String s,int i,PrintWriter pw){
 		String column = "SELECT COUNT(*) FROM information_schema.columns WHERE table_name='message';";
 		String sm;
+		int cnt = 0;
+		int columncnt = 0;
 		try{
 			state = con.prepareStatement(column);
 			result = state.executeQuery();
@@ -94,27 +93,22 @@ public class MailData implements Database{
 				sm = "SELECT * FROM `message` where sendname = ? order by number desc limit ?";
 				state = con.prepareStatement(sm);
 				state.setInt(2, i);
-			}else{
+			}/*else{
 				sm = "SELECT * FROM `message` where sendname = ?";
 				state = con.prepareStatement(sm);
 			}
-			/*
+			
 			 sm = "SELECT * FROM `message` where sendname = ? and where state = SUCCESSED order by number desc limit ?";
 			 */
 			state.setString(1, s);
 			result = state.executeQuery();
 			
-			result.last();
-			x = result.getRow();
-			System.out.println(x);
-			str =  new String[x][columncnt];
-			result.first();
+			str = new String[i][columncnt];
 			
-			while(result.next()){
+			while(result.next() == true){
 				for (int j = 0; j < columncnt ; j++){
 					str[cnt][j] = result.getString(j + 1);
 					pw.println(str[cnt][j]);
-					System.out.println("하이하이");
 				}cnt++;
 			}
 		}catch(Exception e) {
@@ -122,6 +116,7 @@ public class MailData implements Database{
 			System.out.println("message 테이블의 내용을 출력할수 없습니다.");
 		}
 	}
+	
 	@Override
 	public void delete(String s,int i) {
 		String del;
@@ -130,12 +125,13 @@ public class MailData implements Database{
 				del = "DELETE FROM `message` WHERE sendname = ? order by number desc limit ?";
 				state = con.prepareStatement(del);
 				state.setInt(2, i);;
-			}else{
+			}/*else{
 				del = "DELETE FROM `message` WHERE sendname = ?";
 				state = con.prepareStatement(del);
-			}
+			}*/
 			state.setString(1, s);
 			state.executeUpdate();
+			System.out.println("삭제완료");
 		}catch(SQLException e) {
 			System.out.println("message테이블의 내용을 삭제할수 없습니다");
 		}

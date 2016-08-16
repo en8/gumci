@@ -13,6 +13,8 @@ public class Client {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		String ip = "223.130.121.106";
+		
 		Socket sock = null;
 		OutputStream out = null;
 		PrintWriter pw = null;
@@ -20,7 +22,7 @@ public class Client {
 		BufferedReader br = null;
 		try {
 			
-			sock = new Socket("192.168.59.45", 1532);
+			sock = new Socket(ip, 1532);
 			
 			out = sock.getOutputStream();
 			pw = new PrintWriter(new OutputStreamWriter(out));
@@ -34,6 +36,7 @@ public class Client {
 			String title = null;
 			String body = null;
 			String choose = null;
+			String delete = null;
 				
 			Scanner scan = new Scanner(System.in);
 			
@@ -57,12 +60,19 @@ public class Client {
 			body = scan.nextLine();
 			System.out.println("--------------------------------------------------------------------------------------");
 			
+			System.out.print("보낸 메일을 삭제하려면 아무거나 입력 아니면 그냥 넘어가세요");
+			delete = scan.nextLine();
+			System.out.println("--------------------------------------------------------------------------------------");
+			
 			pw.println(to);
 			pw.println(from);
 			pw.println(title);
 			pw.println(body);
+			if (delete.isEmpty() == true){
+			}else{
+				pw.println("Y");
+			}
 			pw.flush();
-			
 			String line = null;
 			
 			int i = 1;
@@ -73,14 +83,6 @@ public class Client {
 					System.out.print(line + "\t");
 				}i++;
 			}
-			
-			System.out.println("1. 현재 보낸사람 삭제 2. 전체삭제 3. 관둔다");
-			choose = scan.nextLine();
-			if(choose == "1" || choose == "2"){
-				pw.println(choose);
-				pw.flush();
-			}
-			
 			sock.close();
 			
 		} catch (Exception e) {

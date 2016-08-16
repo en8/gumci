@@ -84,17 +84,20 @@ public class Send {
 								for(int i = cnt; i < lcnt; i++){
 									flist.add(list.get(i));
 									data.insertm(list.get(i).toString(), sendpeople, title, body,false);
+									System.out.println(mex.getMessage());
 								}
+							}else if(ipcnt == data.list.size() - 1 && cnt == lcnt){
 								data.inserti(allpeople, sendpeople,scnt,flist.size());
 								sw = true;
 							}
 							System.out.println("ip롤링 할 메시지 저장");
-							list.add(0,list.get(cnt).toString());
+							list.add(0,list.get(cnt));
 							fcnt++;
+							System.out.println(mex.getMessage());
 						}
 					}
 					catch(Exception e){
-						e.printStackTrace();
+						System.out.println(e.getMessage());
 					}
 				}
 			if(fcnt == 0){
@@ -103,8 +106,13 @@ public class Send {
 				sw = true;
 			}
 			else{
-				for(int i = fcnt; i < lcnt + fcnt; i++){
-					list.remove(list.get(i).toString());
+				for(int i = fcnt+1; i < (lcnt + fcnt); lcnt--){
+					System.out.println("여기");
+					System.out.println(i);
+					System.out.println(lcnt + fcnt);
+					System.out.println(list.size());
+					System.out.println(list.get(i));
+					list.remove(i);
 				}
 				lcnt = fcnt;
 				fcnt = 0;

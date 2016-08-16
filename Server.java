@@ -11,7 +11,6 @@ import java.net.Socket;
 public class Server extends Thread{
 	Socket client;
 	MailData data;
-	int cnt = 0;
 	
 	
 	InputStream in = null;
@@ -31,6 +30,8 @@ public class Server extends Thread{
 		
 	}
 	public void run(){
+		int cnt = 0;
+		
 		try{
 			in = client.getInputStream(); //미리 버퍼에 데이터를 가져다놓음
 			br = new BufferedReader(new InputStreamReader(in)); //문자 in을 효율적으로 크기를 잡는다.
@@ -49,10 +50,14 @@ public class Server extends Thread{
 					cnt = m.divide.length;
 					data.select(str[1], cnt, pw);
 					pw.flush();
-					break;
+				}
+				if(i == 4){
+					System.out.println("메시지삭제");
+					data.delete(str[1], cnt);
 				}
 				i++;
 			}
+			
 			br.close();
 			client.close();
 			
