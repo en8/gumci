@@ -106,13 +106,17 @@ public class Send {
 				sw = true;
 			}
 			else{
-				for(int i = fcnt+1; i < (lcnt + fcnt); lcnt--){
+				int lfcnt = lcnt + fcnt;
+				
+				for(int i = fcnt; i < lfcnt; i++){
 					System.out.println("여기");
 					System.out.println(i);
 					System.out.println(lcnt + fcnt);
 					System.out.println(list.size());
 					System.out.println(list.get(i));
 					list.remove(i);
+					i--;
+					lfcnt--;
 				}
 				lcnt = fcnt;
 				fcnt = 0;
